@@ -177,6 +177,7 @@ namespace CodeRobot.DAL
             sw.WriteLine("        {");
             sw.WriteLine("            try");
             sw.WriteLine("            {");
+            sw.WriteLine("                " + strTableNameSpec + ".created_at = DateTime.Now;");
             sw.WriteLine("                _context.Add(" + strTableNameSpec+");");
             sw.WriteLine("                await _context.SaveChangesAsync();");
             sw.WriteLine("            }");
