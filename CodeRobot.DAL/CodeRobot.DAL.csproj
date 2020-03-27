@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndroidHelper.cs" />
+    <Compile Include="ContextAPIHelper.cs" />
     <Compile Include="ControllersWebAPIHelper.cs" />
     <Compile Include="ViewCreateHelper.cs" />
     <Compile Include="ViewEditHelper.cs" />

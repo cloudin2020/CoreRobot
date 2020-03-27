@@ -85,8 +85,8 @@ System.InvalidCastException: 对象不能从 DBNull 转换为其他类型。
 
 
 2020-03-17
-1、新增created_at需要初始化一下
-2、新增或更新需要打印LOG
-3、bigint对应的更改需要调整一下
-4、created_at给一个默认值
+1、-新增created_at需要初始化一下
+2、-新增或更新需要打印LOG
+3、-bigint对应的更改需要调整一下
+4、-created_at给一个默认值
 5、select new 不需要左侧

@@ -335,7 +335,11 @@ namespace CodeRobot.APP
                 string strCoreDataPath = strPath + "\\" + strProjectName + "\\" + strProjectName + ".Core\\Data";
                 string strCoreViewsPath = strPath + "\\" + strProjectName + "\\" + strProjectName + ".Core\\Views";
                 string strCoreControllersPath = strPath + "\\" + strProjectName + "\\" + strProjectName + ".Core\\Controllers";
-                string strCoreWebApiPath = strPath + "\\" + strProjectName + "\\" + strProjectName + ".Core\\WebApi";
+                string strCoreWebApiPath = strPath + "\\" + strProjectName + "\\" + strProjectName + ".Core\\ControllersApi";
+                string strCoreApiModelsPath = strPath + "\\" + strProjectName + "\\" + strProjectName + ".Core\\ModelsApi";
+                string strCoreModelsPath = strPath + "\\" + strProjectName + "\\" + strProjectName + ".Core\\Models";
+
+                string strUniAppPath = strPath + "\\" + strProjectName + "\\" + strProjectName + ".UniApp";
 
                 string strTableName = tbTableName.Text.Trim();
 
@@ -343,34 +347,39 @@ namespace CodeRobot.APP
                 {
                     Directory.CreateDirectory(strNewPath);
                     Directory.CreateDirectory(strUtilityPath);
-                    Directory.CreateDirectory(strModelPath);
+                    //Directory.CreateDirectory(strModelPath);
                     Directory.CreateDirectory(strDBSqlHelperPath);
-                    Directory.CreateDirectory(strDALPath);
-                    Directory.CreateDirectory(strBLLPath);
-                    Directory.CreateDirectory(strManagePath);
-                    Directory.CreateDirectory(strAPIPath);
-                    Directory.CreateDirectory(strAndroidModelsPath);
-                    Directory.CreateDirectory(strAndroidJavaPath);
-                    Directory.CreateDirectory(strAndroidLayoutPath);
-                    Directory.CreateDirectory(striOSControllersPath);
-                    Directory.CreateDirectory(striOSViewsPath);
-                    Directory.CreateDirectory(striOSModelsPath);
+                    //Directory.CreateDirectory(strDALPath);
+                    //Directory.CreateDirectory(strBLLPath);
+                    //Directory.CreateDirectory(strManagePath);
+                    //Directory.CreateDirectory(strAPIPath);
+                    //Directory.CreateDirectory(strAndroidModelsPath);
+                    //Directory.CreateDirectory(strAndroidJavaPath);
+                    //Directory.CreateDirectory(strAndroidLayoutPath);
+                    //Directory.CreateDirectory(striOSControllersPath);
+                    //Directory.CreateDirectory(striOSViewsPath);
+                    //Directory.CreateDirectory(striOSModelsPath);
                     Directory.CreateDirectory(strWebPath);
                     Directory.CreateDirectory(strWeChatPath);
                     Directory.CreateDirectory(strWeChatAppPath);
-                    Directory.CreateDirectory(strHTMLPath);
+                    //Directory.CreateDirectory(strHTMLPath);
                     Directory.CreateDirectory(strUIPath);
                     Directory.CreateDirectory(strPMPath);
                     Directory.CreateDirectory(strTestPath);
                     Directory.CreateDirectory(strDataPath);
-                    Directory.CreateDirectory(strSMSPath);
-                    Directory.CreateDirectory(strPushPath);
+                    //Directory.CreateDirectory(strSMSPath);
+                    //Directory.CreateDirectory(strPushPath);
+
 
                     Directory.CreateDirectory(strCorePath);
                     Directory.CreateDirectory(strCoreDataPath);
                     Directory.CreateDirectory(strCoreViewsPath);
                     Directory.CreateDirectory(strCoreControllersPath);
                     Directory.CreateDirectory(strCoreWebApiPath);
+                    Directory.CreateDirectory(strCoreApiModelsPath);
+                    Directory.CreateDirectory(strCoreModelsPath);
+
+                    Directory.CreateDirectory(strUniAppPath);
 
                     //存储路径
                     iniFile.WriteValue("DIR", "PROJECT", strNewPath);
@@ -405,6 +414,10 @@ namespace CodeRobot.APP
                     iniFile.WriteValue("CORE", "VIEWS", strCoreViewsPath);
                     iniFile.WriteValue("CORE", "CONTROLLERS", strCoreControllersPath);
                     iniFile.WriteValue("CORE", "WEBAPI", strCoreWebApiPath);
+                    iniFile.WriteValue("CORE", "APIMODELS", strCoreApiModelsPath);
+                    iniFile.WriteValue("CORE", "MODELS", strCoreModelsPath);
+
+                    iniFile.WriteValue("APP", "UNIAPP", strUniAppPath);
 
                     iniFile.WriteValue("BASE", "TABLENAME", strTableName);
                 }

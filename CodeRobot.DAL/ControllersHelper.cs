@@ -145,11 +145,20 @@ namespace CodeRobot.DAL
             sw.WriteLine("        }");
             sw.WriteLine("");
             sw.WriteLine("        // GET: "+ strTableNameLower +"/details/1");
-            sw.WriteLine("        public async Task<IActionResult> Details(int? id)");
+            if (CommonHelper.ChecktKeyIsBigint(strTableName, strPrimaryKey))
+            {
+                sw.WriteLine("        public async Task<IActionResult> Details(long? id)");
+            }
+            else
+            {
+                sw.WriteLine("        public async Task<IActionResult> Details(int? id)");
+            }
+                
             sw.WriteLine("        {");
             sw.WriteLine("            var " + strTableNameSpec + " = new "+strClassName+"();");
             sw.WriteLine("            try");
             sw.WriteLine("            {");
+            sw.WriteLine("               //log.Debug(\"id=\"+id);");
             sw.WriteLine("               if (id == null)");
             sw.WriteLine("               {");
             sw.WriteLine("                   return Json(new { code = 1, msg = \"获取数据失败\" });");
@@ -177,7 +186,12 @@ namespace CodeRobot.DAL
             sw.WriteLine("        {");
             sw.WriteLine("            try");
             sw.WriteLine("            {");
-            sw.WriteLine("                " + strTableNameSpec + ".created_at = DateTime.Now;");
+            sw.WriteLine("                //log.Debug(" + CommonHelper.GetSaveLogColumnName(strTableName, strTableNameSpec) +");");
+            if (CommonHelper.ChecktCreatedAtKey(strTableName,"created_at"))
+            {
+                sw.WriteLine("                " + strTableNameSpec + ".created_at = DateTime.Now;");
+            }
+            
             sw.WriteLine("                _context.Add(" + strTableNameSpec+");");
             sw.WriteLine("                await _context.SaveChangesAsync();");
             sw.WriteLine("            }");
@@ -192,10 +206,19 @@ namespace CodeRobot.DAL
             sw.WriteLine("        // POST: "+ strTableNameLower +"/edit/1");
             sw.WriteLine("        [HttpPost]");
             sw.WriteLine("        [ValidateAntiForgeryToken]");
-            sw.WriteLine("        public async Task<IActionResult> Edit(int id, [Bind(\""+ strAllColumnName+ "\")] " + strClassName + " "+strTableNameSpec+")");
+            if (CommonHelper.ChecktKeyIsBigint(strTableName, strPrimaryKey))
+            {
+                sw.WriteLine("        public async Task<IActionResult> Edit(long id, [Bind(\"" + strAllColumnName + "\")] " + strClassName + " " + strTableNameSpec + ")");
+            }
+            else
+            {
+                sw.WriteLine("        public async Task<IActionResult> Edit(int id, [Bind(\"" + strAllColumnName + "\")] " + strClassName + " " + strTableNameSpec + ")");
+            }
+                
             sw.WriteLine("        {");
             sw.WriteLine("            try");
             sw.WriteLine("            {");
+            sw.WriteLine("                //log.Debug(" + CommonHelper.GetSaveLogColumnName(strTableName, strTableNameSpec) + ");");
             sw.WriteLine("                if (id != " + strTableNameSpec+ "." + strPrimaryKey + ")");
             sw.WriteLine("                {");
             sw.WriteLine("                    return Json(new { code = 0, msg = \"ID不存在\" });");
@@ -229,7 +252,14 @@ namespace CodeRobot.DAL
             sw.WriteLine("        // POST: "+ strTableNameLower +"/delete/1");
             sw.WriteLine("        [HttpPost]");
             sw.WriteLine("        [ValidateAntiForgeryToken]");
-            sw.WriteLine("        public async Task<IActionResult> Delete(int id)");
+            if (CommonHelper.ChecktKeyIsBigint(strTableName, strPrimaryKey))
+            {
+                sw.WriteLine("        public async Task<IActionResult> Delete(long id)");
+            }
+            else
+            {
+                sw.WriteLine("        public async Task<IActionResult> Delete(int id)");
+            }
             sw.WriteLine("        {");
             sw.WriteLine("            try");
             sw.WriteLine("            {");
@@ -246,7 +276,14 @@ namespace CodeRobot.DAL
             sw.WriteLine("        }");
             sw.WriteLine("");
             sw.WriteLine("        // 检测id是否存在");
-            sw.WriteLine("        private bool "+ strClassName + "Exists(int id)");
+            if (CommonHelper.ChecktKeyIsBigint(strTableName, strPrimaryKey))
+            {
+                sw.WriteLine("        private bool " + strClassName + "Exists(long id)");
+            }
+            else
+            {
+                sw.WriteLine("        private bool " + strClassName + "Exists(int id)");
+            }
             sw.WriteLine("        {");
             sw.WriteLine("            return _context."+strTableName+ ".Any(e => e." + strPrimaryKey + " == id);");
             sw.WriteLine("        }");
@@ -256,5 +293,6 @@ namespace CodeRobot.DAL
 
         }
 
+        
     }
 }

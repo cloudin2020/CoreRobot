@@ -71,13 +71,13 @@ namespace CodeRobot.DAL
             sw.WriteLine("        /// <summary>");
             sw.WriteLine("        /// 初始化数据库上下文");
             sw.WriteLine("        /// </summary>");
-            sw.WriteLine("        private readonly " + strProjectName + "APIContext _context;");
+            sw.WriteLine("        private readonly " + strProjectName + "ApiContext _context;");
             sw.WriteLine("        private readonly ILog log;");
             sw.WriteLine("");
             sw.WriteLine("        /// <summary>");
             sw.WriteLine("        /// 构造及初始化类参数");
             sw.WriteLine("        /// </summary>");
-            sw.WriteLine("        public " + strClassName + "Controller(" + strProjectName + "APIContext context)");
+            sw.WriteLine("        public " + strClassName + "Controller(" + strProjectName + "ApiContext context)");
             sw.WriteLine("        {");
             sw.WriteLine("            _context = context;");
             sw.WriteLine("            this.log = LogManager.GetLogger(Startup.repository.Name, typeof(" + strClassName + "Controller));");
@@ -133,10 +133,18 @@ namespace CodeRobot.DAL
             sw.WriteLine("        /// <param name=\"id\">"+ strTableComment + "ID</param>");
             sw.WriteLine("        /// <returns>返回"+ strTableComment + "详情</returns>");
             sw.WriteLine("        [HttpGet(\"{id}\")]");
-            sw.WriteLine("        public async Task<IActionResult> GetById(int id)");
+            if (CommonHelper.ChecktKeyIsBigint(strTableName, strPrimaryKey))
+            {
+                sw.WriteLine("        public async Task<IActionResult> GetById(long id)");
+            }
+            else
+            {
+                sw.WriteLine("        public async Task<IActionResult> GetById(int id)");
+            }
             sw.WriteLine("        {");
             sw.WriteLine("            try");
             sw.WriteLine("            {");
+            sw.WriteLine("                //log.Debug(\"id=\"+id);");
             sw.WriteLine("                var item = await _context." + strTableName + ".FirstOrDefaultAsync(m => m." + strPrimaryKey + " == id);");
             sw.WriteLine("                if (item == null)");
             sw.WriteLine("                {");
@@ -165,6 +173,11 @@ namespace CodeRobot.DAL
             sw.WriteLine("        {");
             sw.WriteLine("            try");
             sw.WriteLine("            {");
+            sw.WriteLine("                //log.Debug(" + CommonHelper.GetSaveLogColumnName(strTableName, strTableNameSpec) + ");");
+            if (CommonHelper.ChecktCreatedAtKey(strTableName, "created_at"))
+            {
+                sw.WriteLine("                " + strTableNameSpec + ".created_at = DateTime.Now;");
+            }
             sw.WriteLine("                _context." + strTableName + ".Add(" + strTableNameSpec + ");");
             sw.WriteLine("                await _context.SaveChangesAsync();");
             sw.WriteLine("                return Json(new { code = 0, msg = \"success\", data = " + strTableNameSpec + " });");
@@ -183,10 +196,18 @@ namespace CodeRobot.DAL
             sw.WriteLine("        /// <param name=\"" + strTableNameSpec + "\">构造"+ strTableComment + "对象数据</param>");
             sw.WriteLine("        /// <returns></returns>");
             sw.WriteLine("        [HttpPut(\"{id}\")]");
-            sw.WriteLine("        public async Task<IActionResult> Update(int id, " + strClassName + " " + strTableNameSpec + ")");
+            if (CommonHelper.ChecktKeyIsBigint(strTableName, strPrimaryKey))
+            {
+                sw.WriteLine("        public async Task<IActionResult> Update(long id, " + strClassName + " " + strTableNameSpec + ")");
+            }
+            else
+            {
+                sw.WriteLine("        public async Task<IActionResult> Update(int id, " + strClassName + " " + strTableNameSpec + ")");
+            }
             sw.WriteLine("        {");
             sw.WriteLine("            try");
             sw.WriteLine("            {");
+            sw.WriteLine("                //log.Debug(" + CommonHelper.GetSaveLogColumnName(strTableName, strTableNameSpec) + ");");
             sw.WriteLine("                if (" + strTableNameSpec + " == null || " + strTableNameSpec + "." + strPrimaryKey + " != id)");
             sw.WriteLine("                {");
             sw.WriteLine("                    return Json(new { code = 1, msg = \"ID不存在\" });");
@@ -219,7 +240,15 @@ namespace CodeRobot.DAL
             sw.WriteLine("        /// <param name=\"id\">ID</param>");
             sw.WriteLine("        /// <returns>返回是否删除成功</returns>");
             sw.WriteLine("        [HttpDelete(\"{id}\")]");
-            sw.WriteLine("        public async Task<IActionResult> Delete(int id)");
+            if (CommonHelper.ChecktKeyIsBigint(strTableName, strPrimaryKey))
+            {
+                sw.WriteLine("        public async Task<IActionResult> Delete(long id)");
+            }
+            else
+            {
+                sw.WriteLine("        public async Task<IActionResult> Delete(int id)");
+            }
+                
             sw.WriteLine("        {");
             sw.WriteLine("            try");
             sw.WriteLine("            {");
@@ -284,5 +313,6 @@ namespace CodeRobot.DAL
             return strReturnValue;
 
         }
+
     }
 }

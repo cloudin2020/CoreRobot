@@ -661,5 +661,136 @@ namespace CodeRobot.DAL
 
         }
 
+
+        /// <summary>
+        /// 检测字段是否存在
+        /// </summary>
+        /// <param name="strTableName"></param>
+        /// <param name="strCheckColumnName"></param>
+        /// <returns></returns>
+        public static bool ChecktCreatedAtKey(string strTableName, string strCheckColumnName)
+        {
+            bool bValue = false;
+
+            try
+            {
+                MySqlConnection cn = new MySqlConnection(CodeRobot.DBSqlHelper.DBMySQLHelper.ConnectionMySQL());
+                cn.Open();
+                string strSql = "SELECT COLUMN_NAME,DATA_TYPE,COLUMN_TYPE,COLUMN_KEY,COLUMN_COMMENT,EXTRA,COLUMN_DEFAULT,CHARACTER_SET_NAME FROM `information_schema`.`COLUMNS` WHERE TABLE_NAME='" + strTableName + "'";
+                MySqlCommand cmd = new MySqlCommand(strSql, cn);
+                MySqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    string strColumnName = dr["COLUMN_NAME"].ToString();//字段列名
+                    string strColumnKey = dr["COLUMN_KEY"].ToString();//是否是主键
+                    string strColumnComment = dr["COLUMN_COMMENT"].ToString();//注释
+                    string strColumnType = dr["COLUMN_TYPE"].ToString();//注释
+
+                    if (strColumnName == strCheckColumnName)
+                    {
+                        bValue = true;
+                    }
+
+                }
+                dr.Dispose();
+                cn.Close();
+            }
+            catch (Exception ex)
+            {
+                CodeRobot.Utility.LogHelper.Error(typeof(CodeHelper), ex, "检测字段是否存在", "ChecktCreatedAtKey", false);
+            }
+
+            return bValue;
+
+        }
+
+        /// <summary>
+        /// 检测是否bigint
+        /// </summary>
+        /// <param name="strTableName"></param>
+        /// <param name="strPrimaryKey"></param>
+        /// <returns></returns>
+        public static bool ChecktKeyIsBigint(string strTableName, string strPrimaryKey)
+        {
+            bool bValue = false;
+
+            try
+            {
+                MySqlConnection cn = new MySqlConnection(CodeRobot.DBSqlHelper.DBMySQLHelper.ConnectionMySQL());
+                cn.Open();
+                string strSql = "SELECT COLUMN_NAME,DATA_TYPE,COLUMN_TYPE,COLUMN_KEY,COLUMN_COMMENT,EXTRA,COLUMN_DEFAULT,CHARACTER_SET_NAME FROM `information_schema`.`COLUMNS` WHERE TABLE_NAME='" + strTableName + "'";
+                MySqlCommand cmd = new MySqlCommand(strSql, cn);
+                MySqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    string strColumnName = dr["COLUMN_NAME"].ToString();//字段列名
+                    string strColumnKey = dr["COLUMN_KEY"].ToString();//是否是主键
+                    string strColumnComment = dr["COLUMN_COMMENT"].ToString();//注释
+                    string strColumnType = dr["COLUMN_TYPE"].ToString();//注释
+
+                    if (strColumnName == strPrimaryKey)
+                    {
+                        if (strColumnKey == "bigint")
+                        {
+                            bValue = true;
+                        }
+
+                    }
+
+                }
+                dr.Dispose();
+                cn.Close();
+            }
+            catch (Exception ex)
+            {
+                CodeRobot.Utility.LogHelper.Error(typeof(CodeHelper), ex, "检测字段是否存在", "ChecktCreatedAtKey", false);
+            }
+
+            return bValue;
+
+        }
+
+        /// <summary>
+        /// 获取生成日志字段
+        /// </summary>
+        /// <param name="strTableName"></param>
+        /// <param name="newTable"></param>
+        /// <returns></returns>
+        public static string GetSaveLogColumnName(string strTableName,string newTable)
+        {
+            string returnValue = "";
+
+            try
+            {
+                MySqlConnection cn = new MySqlConnection(CodeRobot.DBSqlHelper.DBMySQLHelper.ConnectionMySQL());
+                cn.Open();
+                string strSql = "SELECT COLUMN_NAME,DATA_TYPE,COLUMN_TYPE,COLUMN_KEY,COLUMN_COMMENT,EXTRA,COLUMN_DEFAULT,CHARACTER_SET_NAME FROM `information_schema`.`COLUMNS` WHERE TABLE_NAME='" + strTableName + "'";
+                MySqlCommand cmd = new MySqlCommand(strSql, cn);
+                MySqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    string strColumnName = dr["COLUMN_NAME"].ToString();//字段列名
+                    string strColumnKey = dr["COLUMN_KEY"].ToString();//是否是主键
+                    string strColumnComment = dr["COLUMN_COMMENT"].ToString();//注释
+                    string strColumnType = dr["COLUMN_TYPE"].ToString();//注释
+
+                    returnValue += "\","+ strColumnName + "=\" +"+ newTable + "." + strColumnName + "+";
+                }
+                dr.Dispose();
+                cn.Close();
+            }
+            catch (Exception ex)
+            {
+                CodeRobot.Utility.LogHelper.Error(typeof(CodeHelper), ex, "检测字段是否存在", "GetSaveLogColumnName", false);
+            }
+
+            if (returnValue.Length>0)
+            {
+                returnValue = returnValue.Substring(0, returnValue.Length - 1);
+            }
+
+            return returnValue;
+
+        }
     }
 }

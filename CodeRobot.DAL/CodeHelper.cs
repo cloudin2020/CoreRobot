@@ -61,6 +61,10 @@ namespace CodeRobot.DAL
                 string strCoreViewsPath = iniFile.GetString("CORE", "VIEWS", "");
                 string strControllersPath = iniFile.GetString("CORE", "CONTROLLERS", "");
                 string strWebApiPath = iniFile.GetString("CORE", "WEBAPI", "");
+                string strApiModelsPath = iniFile.GetString("CORE", "APIMODELS", "");
+                string strModelsPath = iniFile.GetString("CORE", "MODELS", "");
+
+                string strUniAppPath = iniFile.GetString("APP", "UNIAPP", "");
 
                 //生成数据库连接文件
                 DBSqlHelper.CreateDBSqlHelperFile(strDBSqlHelperPath, strProjectName);
@@ -84,7 +88,6 @@ namespace CodeRobot.DAL
                 ReadmeHelper.CreateDATAFile(strDataPath, strProjectName);
                 ReadmeHelper.CreateSMSFile(strSMSPath, strProjectName);
                 ReadmeHelper.CreatePUSHFile(strPushPath, strProjectName);
-
                 ReadmeHelper.CreateCoreFile(strCoreMainPath, strProjectName);
 
                 int num = 1;
@@ -122,29 +125,29 @@ namespace CodeRobot.DAL
                     GetColumnList(strTableName, strColumnComment);
 
                     //生成数据处理类
-                    DALHelper.CreateDALClass(strDALPath, strProjectName, strTableName, strColumnComment);
+                    //DALHelper.CreateDALClass(strDALPath, strProjectName, strTableName, strColumnComment);
 
                     //生成业务逻辑类
-                    BLLHelper.CreateBLLClass(strBLLPath, strProjectName, strTableName, strColumnComment);
+                    //BLLHelper.CreateBLLClass(strBLLPath, strProjectName, strTableName, strColumnComment);
 
                     //生成后台代码文件
-                    ManageHelper.CreateManageFile(strManagePath, strProjectName, strTableName, strColumnComment);
+                    //ManageHelper.CreateManageFile(strManagePath, strProjectName, strTableName, strColumnComment);
 
                     //生成RESTAPI
-                    RestAPIHelper.CreateRestAPIClass(strAPIPath, strProjectName, strTableName, strColumnComment);
+                    //RestAPIHelper.CreateRestAPIClass(strAPIPath, strProjectName, strTableName, strColumnComment);
 
                     //生成HTML5
-                    HTML5Helper.CreateHTML5File(strHTML5Path, strProjectName, strTableName, strColumnComment);
+                    //HTML5Helper.CreateHTML5File(strHTML5Path, strProjectName, strTableName, strColumnComment);
 
                     //生成Android Object
-                    AndroidHelper.CreateAndroidModelClass(strAndroidModelPath, strProjectName, strTableName, strAndroidPackage);
-                    AndroidHelper.CreateJavaClass(strAndroidJavaPath, strProjectName, strTableName, strAndroidPackage);
-                    AndroidHelper.CreateXMLFile(strAndroidLayoutPath, strProjectName, strTableName, strAndroidPackage);
+                    //AndroidHelper.CreateAndroidModelClass(strAndroidModelPath, strProjectName, strTableName, strAndroidPackage);
+                    //AndroidHelper.CreateJavaClass(strAndroidJavaPath, strProjectName, strTableName, strAndroidPackage);
+                    //AndroidHelper.CreateXMLFile(strAndroidLayoutPath, strProjectName, strTableName, strAndroidPackage);
 
                     //生成iOS Object
-                    iOSHelper.CreateModelsClass(striOSModelsPath, strProjectName, strTableName, striOSPackage);
-                    iOSHelper.CreateViewsClass(striOSViewsPath, strProjectName, strTableName, striOSPackage);
-                    iOSHelper.CreateControllersClass(striOSControllersPath, strProjectName, strTableName, striOSPackage);
+                    //iOSHelper.CreateModelsClass(striOSModelsPath, strProjectName, strTableName, striOSPackage);
+                    //iOSHelper.CreateViewsClass(striOSViewsPath, strProjectName, strTableName, striOSPackage);
+                    //iOSHelper.CreateControllersClass(striOSControllersPath, strProjectName, strTableName, striOSPackage);
 
                     //生成.net core
                     string strCoreValue = "        \r\n";
@@ -216,16 +219,16 @@ namespace CodeRobot.DAL
                 txtMessage.Text = CodeRobot.Utility.PublicValue.GetMessage();
 
                 //生成HTML项目下文件
-                HTMLHelper.CreateHTMLFile(strHTMLPath, strProjectName);
+                //HTMLHelper.CreateHTMLFile(strHTMLPath, strProjectName);
 
                 //生成UI项目下文件
                 UIHelper.CreateUIFile(strUIPath, strProjectName);
 
                 //创建Utility类库下文件
-                UtilityHelper.CreateUtilityFile(strUtilityPath, strProjectName);
+                //UtilityHelper.CreateUtilityFile(strUtilityPath, strProjectName);
 
                 //创建SMS类库下文件
-                SMSHelper.CreateSMSClass(strSMSPath, strProjectName);
+                //SMSHelper.CreateSMSClass(strSMSPath, strProjectName);
 
                 //创建相关项目的系统文件及项目文件
                 SystemHelper.CreateSolutionSystemFile(strProjectPath, strProjectName);
@@ -241,6 +244,7 @@ namespace CodeRobot.DAL
                 WebHelper.CreateWebFile(strProjectPath, strProjectName);
 
                 ContextHelper.CreateContextClass(strCoreDataPath, strProjectName, strCoreContextList);
+                ContextAPIHelper.CreateContextClass(strCoreDataPath, strProjectName, strCoreContextList);
 
             }
             catch (Exception ex)
@@ -259,6 +263,7 @@ namespace CodeRobot.DAL
             try
             {
                 string strModelPath = iniFile.GetString("DIR", "MODEL", "");//实体类路径
+                string strModelsPath = iniFile.GetString("CORE", "MODELS", "");//实体类路径
                 string strProjectName = iniFile.GetString("BASE", "PROJECT", "");//项目名
 
                 string strEntityVariableList = "";//实体变量
@@ -341,8 +346,8 @@ namespace CodeRobot.DAL
                 cn.Close();
 
                 //生成实体类
-                ModelHelper.CreateModelClass(strModelPath, strProjectName, strTableName, strEntityVariableList, strTableColumnComment);
-
+                //ModelHelper.CreateModelClass(strModelPath, strProjectName, strTableName, strEntityVariableList, strTableColumnComment);
+                ModelHelper.CreateModelClass(strModelsPath, strProjectName, strTableName, strEntityVariableList, strTableColumnComment);
             }
             catch (Exception ex)
             {
