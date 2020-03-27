@@ -93,12 +93,40 @@ namespace CodeRobot.DAL
             sw.WriteLine("        [Route(\"/api/" + strTableNameLower + "\")]");
             sw.WriteLine("        public async Task<IActionResult> GetByPage(int page, int limit)");
             sw.WriteLine("        {");
+            sw.WriteLine("            long lCount = 0;");
             sw.WriteLine("            try");
             sw.WriteLine("            {");
-            sw.WriteLine("                var result = _context." + strTableName + ".Where(n => n." + strPrimaryKey + " > 0);");
-            sw.WriteLine("                long lCount = result.LongCount();");
-            sw.WriteLine("                var list =  await result.OrderByDescending(n => n." + strPrimaryKey + ").Skip((page - 1) * limit).Take(limit).ToListAsync();");
-            sw.WriteLine("                return Json(new { code = 0, msg = \"success\", data = list, count = lCount });");
+            if (!string.IsNullOrEmpty(CommonHelper.GetDetailsSelectJoinList(strTableName)))
+            {
+                sw.WriteLine("                var result = from item in _context.Set<"+ strClassName + ">()");
+                sw.WriteLine("                             "+ CommonHelper.GetDetailsSelectJoinList(strTableName));
+                sw.WriteLine("                             select new");
+                sw.WriteLine("                             {");
+                sw.WriteLine(CommonHelper.GetLeftSelectColumnName2(strTableName, "item"));
+                sw.WriteLine(CommonHelper.GetDetailsSelectJoinColumn(strTableName, strPrimaryKey, CommonHelper.GetLeftSelectColumnName2(strTableName, "item")));
+                sw.WriteLine("");
+                sw.WriteLine("                              };");
+                sw.WriteLine("                //if (!string.IsNullOrEmpty(search_key))");
+                sw.WriteLine("                    //result = result.Where(n => n.search_key.Contains(search_key));");
+                sw.WriteLine("                var list = await result.OrderByDescending(n => n."+strPrimaryKey+").Skip((page - 1) * limit).Take(limit).ToListAsync();");
+                sw.WriteLine("                lCount = result.LongCount();");
+                sw.WriteLine("                if (lCount <= 0)");
+                sw.WriteLine("                {");
+                sw.WriteLine("                    return Json(new { code = 0, msg = \"暂无数据\" });");
+                sw.WriteLine("                }");
+                sw.WriteLine("                else");
+                sw.WriteLine("                {");
+                sw.WriteLine("                    return Json(new { code = 0, msg = \"success\", data = list, count = lCount });");
+                sw.WriteLine("                }");
+            }
+            else
+            {
+                sw.WriteLine("                var result = _context." + strTableName + ".Where(n => n." + strPrimaryKey + " > 0);");
+                sw.WriteLine("                lCount = result.LongCount();");
+                sw.WriteLine("                var list =  await result.OrderByDescending(n => n." + strPrimaryKey + ").Skip((page - 1) * limit).Take(limit).ToListAsync();");
+                sw.WriteLine("                return Json(new { code = 0, msg = \"success\", data = list, count = lCount });");
+            }
+            
             sw.WriteLine("            }");
             sw.WriteLine("            catch (Exception ex)");
             sw.WriteLine("            {");
@@ -152,7 +180,22 @@ namespace CodeRobot.DAL
             sw.WriteLine("                }");
             sw.WriteLine("                else");
             sw.WriteLine("                {");
-            sw.WriteLine("                    return Json(new { code = 0, msg = \"success\", data = item });");
+            if (!string.IsNullOrEmpty(CommonHelper.GetDetailsSelectJoin(strTableName)))
+            {
+                sw.WriteLine("                    var result = ("+ CommonHelper.GetDetailsSelectJoin(strTableName));
+                sw.WriteLine("                                  select new");
+                sw.WriteLine("                                  {");
+                sw.WriteLine(CommonHelper.GetLeftSelectColumnName2(strTableName,"item"));
+                sw.WriteLine(CommonHelper.GetDetailsSelectJoinColumn(strTableName, strPrimaryKey, CommonHelper.GetLeftSelectColumnName2(strTableName, "item")));
+                sw.WriteLine("");
+                sw.WriteLine("                                  }).FirstOrDefault();");
+                sw.WriteLine("                    return Json(new { code = 0, msg = \"success\", data = result });");
+                sw.WriteLine("");
+            }
+            else
+            {
+                sw.WriteLine("                    return Json(new { code = 0, msg = \"success\", data = item });");
+            }
             sw.WriteLine("                }");
             sw.WriteLine("            }");
             sw.WriteLine("            catch (Exception ex)");
