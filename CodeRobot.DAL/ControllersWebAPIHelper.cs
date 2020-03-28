@@ -176,7 +176,7 @@ namespace CodeRobot.DAL
             sw.WriteLine("                var item = await _context." + strTableName + ".FirstOrDefaultAsync(m => m." + strPrimaryKey + " == id);");
             sw.WriteLine("                if (item == null)");
             sw.WriteLine("                {");
-            sw.WriteLine("                    return Json(new { code = 1, msg = \"数据为空\" });");
+            sw.WriteLine("                    return Json(new { code = 0, msg = \"数据为空\" });");
             sw.WriteLine("                }");
             sw.WriteLine("                else");
             sw.WriteLine("                {");

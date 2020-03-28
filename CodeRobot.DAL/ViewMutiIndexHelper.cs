@@ -126,8 +126,7 @@ namespace CodeRobot.DAL
             sw.WriteLine("            ],");
             sw.WriteLine("            page: !0,");
             sw.WriteLine("            limit: 10,");
-            sw.WriteLine("            limits: [10, 15, 20, 25, 30],");
-            sw.WriteLine("            text: \"对不起，加载出现异常！\"");
+            sw.WriteLine("            limits: [10, 15, 20, 25, 30]");
             sw.WriteLine("        }),");
             sw.WriteLine("");
             sw.WriteLine("            //右侧操作事件");
