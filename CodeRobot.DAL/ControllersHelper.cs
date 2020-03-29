@@ -263,7 +263,7 @@ namespace CodeRobot.DAL
             sw.WriteLine("        {");
             sw.WriteLine("            try");
             sw.WriteLine("            {");
-            sw.WriteLine("                var " + strTableNameSpec+" = await _context."+strTableName+ ".FirstOrDefaultAsync(id);");
+            sw.WriteLine("                var " + strTableNameSpec+" = await _context."+strTableName+ ".FirstOrDefaultAsync(c => c."+strPrimaryKey+" == id);");
             sw.WriteLine("                _context." + strTableName+".Remove("+strTableNameSpec+");");
             sw.WriteLine("                await _context.SaveChangesAsync();");
             sw.WriteLine("            }");
