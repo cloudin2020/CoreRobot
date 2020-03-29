@@ -89,4 +89,4 @@ System.InvalidCastException: 对象不能从 DBNull 转换为其他类型。
 2、-新增或更新需要打印LOG
 3、-bigint对应的更改需要调整一下
 4、-created_at给一个默认值
-5、select new 不需要左侧
+5、select new 不需要左侧11
