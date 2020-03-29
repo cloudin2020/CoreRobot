@@ -730,7 +730,7 @@ namespace CodeRobot.DAL
 
                     if (strColumnName == strPrimaryKey)
                     {
-                        if (strColumnType == "int(20)")
+                        if (strColumnType.Contains("bigint"))
                         {
                             bValue = true;
                         }
