@@ -340,6 +340,14 @@ namespace CodeRobot.APP
                 string strCoreModelsPath = strPath + "\\" + strProjectName + "\\" + strProjectName + ".Core\\Models";
 
                 string strUniAppPath = strPath + "\\" + strProjectName + "\\" + strProjectName + ".UniApp";
+                
+                string strJavaPath = strPath + "\\" + strProjectName + "\\" + strProjectName + ".Java";
+                string strJavaControllerPath = strPath + "\\" + strProjectName + "\\" + strProjectName + ".Java\\Controller";
+                string strJavaEntityPath = strPath + "\\" + strProjectName + "\\" + strProjectName + ".Java\\Entity";
+                string strJavaMapperPath = strPath + "\\" + strProjectName + "\\" + strProjectName + ".Java\\Mapper";
+                string strJavaServicePath = strPath + "\\" + strProjectName + "\\" + strProjectName + ".Java\\Service";
+                string strJavaSrcMapperPath = strPath + "\\" + strProjectName + "\\" + strProjectName + ".Java\\src\\Mapper";
+                string strJavaSrcViewsPath = strPath + "\\" + strProjectName + "\\" + strProjectName + ".Java\\src\\Views";
 
                 string strTableName = tbTableName.Text.Trim();
 
@@ -348,7 +356,7 @@ namespace CodeRobot.APP
                     Directory.CreateDirectory(strNewPath);
                     Directory.CreateDirectory(strUtilityPath);
                     //Directory.CreateDirectory(strModelPath);
-                    Directory.CreateDirectory(strDBSqlHelperPath);
+                    //Directory.CreateDirectory(strDBSqlHelperPath);
                     //Directory.CreateDirectory(strDALPath);
                     //Directory.CreateDirectory(strBLLPath);
                     //Directory.CreateDirectory(strManagePath);
@@ -359,9 +367,9 @@ namespace CodeRobot.APP
                     //Directory.CreateDirectory(striOSControllersPath);
                     //Directory.CreateDirectory(striOSViewsPath);
                     //Directory.CreateDirectory(striOSModelsPath);
-                    Directory.CreateDirectory(strWebPath);
-                    Directory.CreateDirectory(strWeChatPath);
-                    Directory.CreateDirectory(strWeChatAppPath);
+                    //Directory.CreateDirectory(strWebPath);
+                    //Directory.CreateDirectory(strWeChatPath);
+                    //Directory.CreateDirectory(strWeChatAppPath);
                     //Directory.CreateDirectory(strHTMLPath);
                     Directory.CreateDirectory(strUIPath);
                     Directory.CreateDirectory(strPMPath);
@@ -370,16 +378,7 @@ namespace CodeRobot.APP
                     //Directory.CreateDirectory(strSMSPath);
                     //Directory.CreateDirectory(strPushPath);
 
-
-                    Directory.CreateDirectory(strCorePath);
-                    Directory.CreateDirectory(strCoreDataPath);
-                    Directory.CreateDirectory(strCoreViewsPath);
-                    Directory.CreateDirectory(strCoreControllersPath);
-                    Directory.CreateDirectory(strCoreWebApiPath);
-                    Directory.CreateDirectory(strCoreApiModelsPath);
-                    Directory.CreateDirectory(strCoreModelsPath);
-
-                    Directory.CreateDirectory(strUniAppPath);
+                    
 
                     //存储路径
                     iniFile.WriteValue("DIR", "PROJECT", strNewPath);
@@ -394,30 +393,68 @@ namespace CodeRobot.APP
                     iniFile.WriteValue("DIR", "WEB", strWebPath);
                     iniFile.WriteValue("DIR", "HTML5", strWeChatPath);
                     iniFile.WriteValue("DIR", "WeChatApp", strWeChatAppPath);
-                    iniFile.WriteValue("DIR", "HTML", strHTMLPath);
+                    //iniFile.WriteValue("DIR", "HTML", strHTMLPath);
                     iniFile.WriteValue("DIR", "UI", strUIPath);
                     iniFile.WriteValue("DIR", "PM", strPMPath);
                     iniFile.WriteValue("DIR", "TEST", strTestPath);
                     iniFile.WriteValue("DIR", "DATA", strDataPath);
-                    iniFile.WriteValue("DIR", "SMS", strSMSPath);
-                    iniFile.WriteValue("DIR", "PUSH", strPushPath);
+                    //iniFile.WriteValue("DIR", "SMS", strSMSPath);
+                    //iniFile.WriteValue("DIR", "PUSH", strPushPath);
 
-                    iniFile.WriteValue("ANDROID", "MODEL", strAndroidModelsPath);
-                    iniFile.WriteValue("ANDROID", "JAVA", strAndroidJavaPath);
-                    iniFile.WriteValue("ANDROID", "LAYOUT", strAndroidLayoutPath);
-                    iniFile.WriteValue("IOS", "MODELS", striOSModelsPath);
-                    iniFile.WriteValue("IOS", "VIEWS", striOSViewsPath);
-                    iniFile.WriteValue("IOS", "CONTROLLERS", striOSControllersPath);
+                    if (cbCore.Checked)
+                    {
+                        Directory.CreateDirectory(strCorePath);
+                        Directory.CreateDirectory(strCoreDataPath);
+                        Directory.CreateDirectory(strCoreViewsPath);
+                        Directory.CreateDirectory(strCoreControllersPath);
+                        Directory.CreateDirectory(strCoreWebApiPath);
+                        Directory.CreateDirectory(strCoreApiModelsPath);
+                        Directory.CreateDirectory(strCoreModelsPath);
+                    }
 
-                    iniFile.WriteValue("CORE", "MAIN", strCorePath);
-                    iniFile.WriteValue("CORE", "DATA", strCoreDataPath);
-                    iniFile.WriteValue("CORE", "VIEWS", strCoreViewsPath);
-                    iniFile.WriteValue("CORE", "CONTROLLERS", strCoreControllersPath);
-                    iniFile.WriteValue("CORE", "WEBAPI", strCoreWebApiPath);
-                    iniFile.WriteValue("CORE", "APIMODELS", strCoreApiModelsPath);
-                    iniFile.WriteValue("CORE", "MODELS", strCoreModelsPath);
+                    if (cbAndroid.Checked)
+                    {
+                        iniFile.WriteValue("ANDROID", "MODEL", strAndroidModelsPath);
+                        iniFile.WriteValue("ANDROID", "JAVA", strAndroidJavaPath);
+                        iniFile.WriteValue("ANDROID", "LAYOUT", strAndroidLayoutPath);
+                    }
 
-                    iniFile.WriteValue("APP", "UNIAPP", strUniAppPath);
+                    if (cbiPhone.Checked)
+                    {
+                        iniFile.WriteValue("IOS", "MODELS", striOSModelsPath);
+                        iniFile.WriteValue("IOS", "VIEWS", striOSViewsPath);
+                        iniFile.WriteValue("IOS", "CONTROLLERS", striOSControllersPath);
+                    }
+
+                    if (cbCore.Checked)
+                    {
+                        iniFile.WriteValue("CORE", "MAIN", strCorePath);
+                        iniFile.WriteValue("CORE", "DATA", strCoreDataPath);
+                        iniFile.WriteValue("CORE", "VIEWS", strCoreViewsPath);
+                        iniFile.WriteValue("CORE", "CONTROLLERS", strCoreControllersPath);
+                        iniFile.WriteValue("CORE", "WEBAPI", strCoreWebApiPath);
+                        iniFile.WriteValue("CORE", "APIMODELS", strCoreApiModelsPath);
+                        iniFile.WriteValue("CORE", "MODELS", strCoreModelsPath);
+                    }
+
+                    if (cbUniApp.Checked)
+                    {
+                        Directory.CreateDirectory(strUniAppPath);
+                        iniFile.WriteValue("APP", "UNIAPP", strUniAppPath);
+                    }
+
+                    if (cbJava.Checked)
+                    {
+                        Directory.CreateDirectory(strJavaPath);
+                        iniFile.WriteValue("JAVA", "JAVA", strJavaPath);
+                        iniFile.WriteValue("JAVA", "CONTROLLER", strJavaControllerPath);
+                        iniFile.WriteValue("JAVA", "ENTITY", strJavaEntityPath);
+                        iniFile.WriteValue("JAVA", "MAPPER", strJavaMapperPath);
+                        iniFile.WriteValue("JAVA", "SERVICE", strJavaServicePath);
+                        iniFile.WriteValue("JAVA", "SRCMAPPER", strJavaSrcMapperPath);
+                        iniFile.WriteValue("JAVA", "SRCVIEWS", strJavaSrcViewsPath);
+                    }
+
 
                     iniFile.WriteValue("BASE", "TABLENAME", strTableName);
                 }
@@ -732,7 +769,7 @@ namespace CodeRobot.APP
         private void button1_Click(object sender, EventArgs e)
         {
             string strNewLine = "";
-            string strPath = Application.StartupPath + "\\template\\core\\Create.html";
+            string strPath = Application.StartupPath + "\\template\\java\\add.html";
             using (StreamReader sReader = new StreamReader(strPath, Encoding.UTF8))
             {
                 string aLine;

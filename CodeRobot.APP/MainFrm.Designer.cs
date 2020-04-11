@@ -35,7 +35,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label11 = new System.Windows.Forms.Label();
             this.tbTableName = new System.Windows.Forms.TextBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.cbMP = new System.Windows.Forms.CheckBox();
             this.label9 = new System.Windows.Forms.Label();
             this.cbWeb = new System.Windows.Forms.CheckBox();
             this.cbiPhone = new System.Windows.Forms.CheckBox();
@@ -65,6 +65,9 @@
             this.btnDocument = new System.Windows.Forms.Button();
             this.btnTest = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.cbJava = new System.Windows.Forms.CheckBox();
+            this.cbCore = new System.Windows.Forms.CheckBox();
+            this.cbUniApp = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -108,9 +111,12 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cbUniApp);
+            this.groupBox1.Controls.Add(this.cbCore);
+            this.groupBox1.Controls.Add(this.cbJava);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.tbTableName);
-            this.groupBox1.Controls.Add(this.checkBox1);
+            this.groupBox1.Controls.Add(this.cbMP);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.cbWeb);
             this.groupBox1.Controls.Add(this.cbiPhone);
@@ -135,7 +141,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(689, 83);
+            this.label11.Location = new System.Drawing.Point(780, 87);
             this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(82, 15);
@@ -144,23 +150,21 @@
             // 
             // tbTableName
             // 
-            this.tbTableName.Location = new System.Drawing.Point(784, 80);
+            this.tbTableName.Location = new System.Drawing.Point(870, 80);
             this.tbTableName.Margin = new System.Windows.Forms.Padding(4);
             this.tbTableName.Name = "tbTableName";
-            this.tbTableName.Size = new System.Drawing.Size(199, 25);
+            this.tbTableName.Size = new System.Drawing.Size(113, 25);
             this.tbTableName.TabIndex = 103;
             // 
-            // checkBox1
+            // cbMP
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(519, 83);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(104, 19);
-            this.checkBox1.TabIndex = 102;
-            this.checkBox1.Text = "微信小程序";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.cbMP.AutoSize = true;
+            this.cbMP.Location = new System.Drawing.Point(241, 83);
+            this.cbMP.Name = "cbMP";
+            this.cbMP.Size = new System.Drawing.Size(74, 19);
+            this.cbMP.TabIndex = 102;
+            this.cbMP.Text = "小程序";
+            this.cbMP.UseVisualStyleBackColor = true;
             // 
             // label9
             // 
@@ -175,9 +179,7 @@
             // cbWeb
             // 
             this.cbWeb.AutoSize = true;
-            this.cbWeb.Checked = true;
-            this.cbWeb.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbWeb.Location = new System.Drawing.Point(451, 83);
+            this.cbWeb.Location = new System.Drawing.Point(321, 82);
             this.cbWeb.Name = "cbWeb";
             this.cbWeb.Size = new System.Drawing.Size(53, 19);
             this.cbWeb.TabIndex = 100;
@@ -187,9 +189,7 @@
             // cbiPhone
             // 
             this.cbiPhone.AutoSize = true;
-            this.cbiPhone.Checked = true;
-            this.cbiPhone.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbiPhone.Location = new System.Drawing.Point(386, 83);
+            this.cbiPhone.Location = new System.Drawing.Point(445, 82);
             this.cbiPhone.Name = "cbiPhone";
             this.cbiPhone.Size = new System.Drawing.Size(53, 19);
             this.cbiPhone.TabIndex = 99;
@@ -199,21 +199,17 @@
             // cbAndroid
             // 
             this.cbAndroid.AutoSize = true;
-            this.cbAndroid.Checked = true;
-            this.cbAndroid.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbAndroid.Location = new System.Drawing.Point(284, 83);
+            this.cbAndroid.Location = new System.Drawing.Point(380, 83);
             this.cbAndroid.Name = "cbAndroid";
-            this.cbAndroid.Size = new System.Drawing.Size(85, 19);
+            this.cbAndroid.Size = new System.Drawing.Size(59, 19);
             this.cbAndroid.TabIndex = 98;
-            this.cbAndroid.Text = "ANDROID";
+            this.cbAndroid.Text = "安卓";
             this.cbAndroid.UseVisualStyleBackColor = true;
             // 
             // cbH5
             // 
             this.cbH5.AutoSize = true;
-            this.cbH5.Checked = true;
-            this.cbH5.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbH5.Location = new System.Drawing.Point(222, 83);
+            this.cbH5.Location = new System.Drawing.Point(193, 82);
             this.cbH5.Name = "cbH5";
             this.cbH5.Size = new System.Drawing.Size(45, 19);
             this.cbH5.TabIndex = 97;
@@ -223,13 +219,11 @@
             // cbMange
             // 
             this.cbMange.AutoSize = true;
-            this.cbMange.Checked = true;
-            this.cbMange.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbMange.Location = new System.Drawing.Point(128, 83);
             this.cbMange.Name = "cbMange";
-            this.cbMange.Size = new System.Drawing.Size(77, 19);
+            this.cbMange.Size = new System.Drawing.Size(59, 19);
             this.cbMange.TabIndex = 96;
-            this.cbMange.Text = "MANAGE";
+            this.cbMange.Text = "后台";
             this.cbMange.UseVisualStyleBackColor = true;
             // 
             // label8
@@ -465,6 +459,38 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // cbJava
+            // 
+            this.cbJava.AutoSize = true;
+            this.cbJava.Checked = true;
+            this.cbJava.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbJava.Location = new System.Drawing.Point(654, 83);
+            this.cbJava.Name = "cbJava";
+            this.cbJava.Size = new System.Drawing.Size(61, 19);
+            this.cbJava.TabIndex = 105;
+            this.cbJava.Text = "JAVA";
+            this.cbJava.UseVisualStyleBackColor = true;
+            // 
+            // cbCore
+            // 
+            this.cbCore.AutoSize = true;
+            this.cbCore.Location = new System.Drawing.Point(504, 83);
+            this.cbCore.Name = "cbCore";
+            this.cbCore.Size = new System.Drawing.Size(61, 19);
+            this.cbCore.TabIndex = 106;
+            this.cbCore.Text = "CORE";
+            this.cbCore.UseVisualStyleBackColor = true;
+            // 
+            // cbUniApp
+            // 
+            this.cbUniApp.AutoSize = true;
+            this.cbUniApp.Location = new System.Drawing.Point(571, 83);
+            this.cbUniApp.Name = "cbUniApp";
+            this.cbUniApp.Size = new System.Drawing.Size(77, 19);
+            this.cbUniApp.TabIndex = 107;
+            this.cbUniApp.Text = "UniApp";
+            this.cbUniApp.UseVisualStyleBackColor = true;
+            // 
             // MainFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -527,9 +553,12 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ComboBox cbList;
         private System.Windows.Forms.Button btnTest;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox cbMP;
         private System.Windows.Forms.TextBox tbTableName;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox cbJava;
+        private System.Windows.Forms.CheckBox cbCore;
+        private System.Windows.Forms.CheckBox cbUniApp;
     }
 }

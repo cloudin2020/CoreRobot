@@ -847,5 +847,52 @@ namespace CodeRobot.DAL
                 CodeRobot.Utility.LogHelper.Error(typeof(ReadmeHelper), ex, "创建Manage(.net core) README文件", "CreateCoreFile", false);
             }
         }
+
+        /// <summary>
+        /// 创建Manage(.net core) README文件
+        /// </summary>
+        /// <param name="strPath">路径</param>
+        /// <param name="strProjectName">项目命名</param>
+        public static void CreateJavaFile(string strPath, string strProjectName)
+        {
+            try
+            {
+                string strLine = "# " + strProjectName + ".Core\r\n";
+                strLine += "\r\n";
+                strLine += "### **后台管理系统.net core**\r\n";
+                strLine += "\r\n";
+                strLine += "demo:\r\n";
+                strLine += "***\r\n";
+                strLine += "\r\n";
+                strLine += "暂无\r\n";
+                strLine += "\r\n";
+                strLine += "***\r\n";
+                strLine += "\r\n";
+                strLine += "### **引用框架**\r\n";
+                strLine += "\r\n";
+                strLine += "Microsoft.AspNetCore.App\r\n";
+                strLine += "Microsoft.NETCore.App\r\n";
+                strLine += "log4net\r\n";
+                strLine += "System.Drawing.Common\r\n";
+                strLine += "\r\n";
+                strLine += "### **引用包**\r\n";
+                strLine += "工具 → NuGet包管理 → 程序包管理控制台\r\n";
+                strLine += "\r\n";
+                strLine += "Microsoft.EntityFrameworkCore.Tools\r\n";
+                strLine += "Pomelo.EntityFrameworkCore.MySql\r\n";
+                strLine += "\r\n";
+                strLine += "### **引用项目**\r\n";
+                strLine += "\r\n";
+                strLine += strProjectName + ".Models\r\n";
+                strLine += strProjectName + ".Utility\r\n";
+                strLine += "\r\n";
+
+                CodeRobot.Utility.TxtFile.CreateReadMeFile(strLine, strPath);
+            }
+            catch (Exception ex)
+            {
+                CodeRobot.Utility.LogHelper.Error(typeof(ReadmeHelper), ex, "创建Manage(.net core) README文件", "CreateCoreFile", false);
+            }
+        }
     }
 }

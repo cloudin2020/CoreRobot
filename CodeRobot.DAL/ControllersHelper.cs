@@ -205,6 +205,7 @@ namespace CodeRobot.DAL
             sw.WriteLine("");
             sw.WriteLine("        // POST: "+ strTableNameLower +"/edit/1");
             sw.WriteLine("        [HttpPost]");
+            sw.WriteLine("        [Route(\"/api/" + strTableNameLower + "/update/{id}\")]");
             sw.WriteLine("        [ValidateAntiForgeryToken]");
             if (CommonHelper.ChecktKeyIsBigint(strTableName, strPrimaryKey))
             {
@@ -251,6 +252,7 @@ namespace CodeRobot.DAL
             sw.WriteLine("");
             sw.WriteLine("        // POST: "+ strTableNameLower +"/delete/1");
             sw.WriteLine("        [HttpPost]");
+            sw.WriteLine("        [Route(\"/api/" + strTableNameLower + "/del/{id}\")]");
             sw.WriteLine("        [ValidateAntiForgeryToken]");
             if (CommonHelper.ChecktKeyIsBigint(strTableName, strPrimaryKey))
             {

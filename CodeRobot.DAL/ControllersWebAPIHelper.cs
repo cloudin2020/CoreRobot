@@ -238,7 +238,8 @@ namespace CodeRobot.DAL
             sw.WriteLine("        /// <param name=\"id\">ID</param>");
             sw.WriteLine("        /// <param name=\"" + strTableNameSpec + "\">构造"+ strTableComment + "对象数据</param>");
             sw.WriteLine("        /// <returns></returns>");
-            sw.WriteLine("        [HttpPut(\"{id}\")]");
+            sw.WriteLine("        [HttpPost]");
+            sw.WriteLine("        [Route(\"/api/" + strTableNameLower + "/update/{id}\")]");
             if (CommonHelper.ChecktKeyIsBigint(strTableName, strPrimaryKey))
             {
                 sw.WriteLine("        public async Task<IActionResult> Update(long id, " + strClassName + " " + strTableNameSpec + ")");
@@ -282,7 +283,8 @@ namespace CodeRobot.DAL
             sw.WriteLine("        /// </summary>");
             sw.WriteLine("        /// <param name=\"id\">ID</param>");
             sw.WriteLine("        /// <returns>返回是否删除成功</returns>");
-            sw.WriteLine("        [HttpDelete(\"{id}\")]");
+            sw.WriteLine("        [HttpPost]");
+            sw.WriteLine("        [Route(\"/api/" + strTableNameLower + "/del/{id}\")]");
             if (CommonHelper.ChecktKeyIsBigint(strTableName, strPrimaryKey))
             {
                 sw.WriteLine("        public async Task<IActionResult> Delete(long id)");

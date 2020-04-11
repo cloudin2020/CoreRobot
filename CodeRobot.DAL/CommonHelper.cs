@@ -125,6 +125,7 @@ namespace CodeRobot.DAL
                 strColumnComment = strColumnComment.Replace("{TEXTAREA}", "");
                 strColumnComment = strColumnComment.Replace("{MutiPages}", "");
                 strColumnComment = strColumnComment.Replace("{ParentPages}", "");
+                strColumnComment = strColumnComment.Replace("ID", "");
 
                 if (strColumnComment.Contains("]"))
                 {
@@ -862,6 +863,143 @@ namespace CodeRobot.DAL
                         num++;
 
                         strLeftJoin += strJoin;
+                    }
+
+                    returnValue = strLeftJoin;
+                }
+                dr.Dispose();
+                cn.Close();
+            }
+            catch (Exception ex)
+            {
+                CodeRobot.Utility.LogHelper.Error(typeof(CodeHelper), ex, "获取详情页面左联Linq", "GetDetailsSelectJoin", false);
+            }
+
+            return returnValue;
+
+        }
+
+        /// <summary>
+        /// 获取详情页面左联Linq-list Java
+        /// </summary>
+        /// <param name="strTableName"></param>
+        /// <returns></returns>
+        public static string GetDetailsSelectJoinListForJava(string strTableName)
+        {
+            string returnValue = "";
+
+            try
+            {
+                int num = 1;
+                string strLeftJoin = "";
+                MySqlConnection cn = new MySqlConnection(CodeRobot.DBSqlHelper.DBMySQLHelper.ConnectionMySQL());
+                cn.Open();
+                string strSql = "SELECT COLUMN_NAME,DATA_TYPE,COLUMN_TYPE,COLUMN_KEY,COLUMN_COMMENT,EXTRA,COLUMN_DEFAULT,CHARACTER_SET_NAME FROM `information_schema`.`COLUMNS` WHERE TABLE_NAME='" + strTableName + "'";
+                MySqlCommand cmd = new MySqlCommand(strSql, cn);
+                MySqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    string strColumnName = dr["COLUMN_NAME"].ToString();//字段列名
+                    string strColumnKey = dr["COLUMN_KEY"].ToString();//是否是主键
+                    string strColumnComment = dr["COLUMN_COMMENT"].ToString();//注释
+                    string strColumnType = dr["COLUMN_TYPE"].ToString();//注释
+
+                    if (strColumnComment.Contains("{下拉}"))
+                    {
+                        //获取注释中的表名
+                        string strColumnComment2 = strColumnComment.Replace("[", ",");
+                        strColumnComment2 = strColumnComment2.Replace("]", ",");
+                        string[] arrayComment = strColumnComment2.Split(new char[] { ',' });
+                        //{搜索}{下拉},wlf_news_types,分类ID
+                        string strGetNewTable = arrayComment[1];
+                        //strGetNewTable = CommonHelper.GetClassName(strGetNewTable);//类名
+                        //strGetNewTable = CommonHelper.GetTableNameUpper(strGetNewTable);
+
+                        string strJoin = "";
+                        if (num == 1)
+                        {
+                            strJoin = "		LEFT JOIN " + strGetNewTable + " a ON (item." + strColumnName + " = a." + strColumnName + ")\r\n";
+                        }
+                        if (num == 2)
+                        {
+                            strJoin = "		LEFT JOIN " + strGetNewTable + " b ON (item." + strColumnName + " = b." + strColumnName + ")\r\n";
+                        }
+                        if (num == 3)
+                        {
+                            strJoin = "		LEFT JOIN " + strGetNewTable + " c ON (item." + strColumnName + " = c." + strColumnName + ")\r\n";
+                        }
+                        if (num == 4)
+                        {
+                            strJoin = "		LEFT JOIN " + strGetNewTable + " d ON (item." + strColumnName + " = d." + strColumnName + ")\r\n";
+                        }
+                        if (num == 5)
+                        {
+                            strJoin = "		LEFT JOIN " + strGetNewTable + " e ON (item." + strColumnName + " = e." + strColumnName + ")\r\n";
+                        }
+                        if (num == 6)
+                        {
+                            strJoin = "		LEFT JOIN " + strGetNewTable + " f ON (item." + strColumnName + " = f." + strColumnName + ")\r\n";
+                        }
+                        if (num == 7)
+                        {
+                            strJoin = "		LEFT JOIN " + strGetNewTable + " g ON (item." + strColumnName + " = g." + strColumnName + ")\r\n";
+                        }
+                        num++;
+
+                        strLeftJoin += strJoin;
+                    }
+
+                    returnValue = strLeftJoin;
+                }
+                dr.Dispose();
+                cn.Close();
+            }
+            catch (Exception ex)
+            {
+                CodeRobot.Utility.LogHelper.Error(typeof(CodeHelper), ex, "获取详情页面左联Linq", "GetDetailsSelectJoin", false);
+            }
+
+            return returnValue;
+
+        }
+
+        /// <summary>
+        /// 获取搜索字段列表 Java
+        /// </summary>
+        /// <param name="strTableName"></param>
+        /// <returns></returns>
+        public static string GetSearchListForJava(string strTableName)
+        {
+            string returnValue = "";
+
+            try
+            {
+                string strLeftJoin = "";
+                MySqlConnection cn = new MySqlConnection(CodeRobot.DBSqlHelper.DBMySQLHelper.ConnectionMySQL());
+                cn.Open();
+                string strSql = "SELECT COLUMN_NAME,DATA_TYPE,COLUMN_TYPE,COLUMN_KEY,COLUMN_COMMENT,EXTRA,COLUMN_DEFAULT,CHARACTER_SET_NAME FROM `information_schema`.`COLUMNS` WHERE TABLE_NAME='" + strTableName + "'";
+                MySqlCommand cmd = new MySqlCommand(strSql, cn);
+                MySqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    string strColumnName = dr["COLUMN_NAME"].ToString();//字段列名
+                    string strColumnKey = dr["COLUMN_KEY"].ToString();//是否是主键
+                    string strColumnComment = dr["COLUMN_COMMENT"].ToString();//注释
+                    string strColumnType = dr["COLUMN_TYPE"].ToString();//注释
+
+                    string strClassName = CommonHelper.GetClassName(strTableName);//类名
+                    strClassName = CommonHelper.GetTableNameUpper(strClassName);
+                    string strTableNameSpec = CommonHelper.GetTableNameFirstLowerSecondUpper(strClassName);//如：newsTypes
+                    string strTableNameLower = strTableNameSpec.ToLower();//如：newstypes
+
+                    if (strColumnComment.Contains("{搜索}"))
+                    {
+                        //获取注释中的表名
+                        string strValue= "		<if test=\""+ strTableNameLower + "." + strColumnName + " != null and " + strTableNameLower + "." + strColumnName + " != ''\">\r\n";
+                        strValue += "            AND a." + strColumnName + " LIKE #{" + strTableNameLower + "." + strColumnName + "}\r\n";
+                        strValue += "        </if>\r\n";
+
+                        strLeftJoin += strValue;
                     }
 
                     returnValue = strLeftJoin;

@@ -47,6 +47,17 @@
   <ItemGroup>
     <Compile Include="AndroidHelper.cs" />
     <Compile Include="ContextAPIHelper.cs" />
+    <Compile Include="JavaControllersViewHelper.cs" />
+    <Compile Include="JavaMapperHelper.cs" />
+    <Compile Include="JavaViewsDetailsHelper.cs" />
+    <Compile Include="JavaViewsMapperHelper.cs" />
+    <Compile Include="JavaViewsListHelper.cs" />
+    <Compile Include="JavaViewsEditHelper.cs" />
+    <Compile Include="JavaViewsCreateHelper.cs" />
+    <Compile Include="JavaServiceImplHelper.cs" />
+    <Compile Include="JavaServiceHelper.cs" />
+    <Compile Include="JavaEntityHelper.cs" />
+    <Compile Include="JavaControllersHelper.cs" />
     <Compile Include="ControllersWebAPIHelper.cs" />
     <Compile Include="ViewCreateHelper.cs" />
     <Compile Include="ViewEditHelper.cs" />

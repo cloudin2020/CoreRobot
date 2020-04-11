@@ -66,6 +66,14 @@ namespace CodeRobot.DAL
 
                 string strUniAppPath = iniFile.GetString("APP", "UNIAPP", "");
 
+                string strJavaPath = iniFile.GetString("JAVA", "JAVA", "");
+                string strJavaControllerPath = iniFile.GetString("JAVA", "CONTROLLER", "");
+                string strJavaEntityPath = iniFile.GetString("JAVA", "ENTITY", "");
+                string strJavaMapperPath = iniFile.GetString("JAVA", "MAPPER", "");
+                string strJavaServicePath = iniFile.GetString("JAVA", "SERVICE", "");
+                string strJavaSrcMapperPath = iniFile.GetString("JAVA", "SRCMAPPER", "");
+                string strJavaSrcViewsPath = iniFile.GetString("JAVA", "SRCVIEWS", "");
+
                 //生成数据库连接文件
                 DBSqlHelper.CreateDBSqlHelperFile(strDBSqlHelperPath, strProjectName);
 
@@ -89,6 +97,7 @@ namespace CodeRobot.DAL
                 ReadmeHelper.CreateSMSFile(strSMSPath, strProjectName);
                 ReadmeHelper.CreatePUSHFile(strPushPath, strProjectName);
                 ReadmeHelper.CreateCoreFile(strCoreMainPath, strProjectName);
+                ReadmeHelper.CreateJavaFile(strJavaControllerPath, strProjectName);
 
                 int num = 1;
                 string strCompileTableModel = "";
@@ -114,8 +123,10 @@ namespace CodeRobot.DAL
                     string strTableName = dr["TABLE_NAME"].ToString();
                     string strColumnName = dr["COLUMN_NAME"].ToString();//主关键字
                     string strColumnComment = dr["COLUMN_COMMENT"].ToString();//主关键字说明
-                    strColumnComment = strColumnComment.Replace("ID", "");
-                    
+                    //strColumnComment = strColumnComment.Replace("ID", "");
+                    strColumnComment = CommonHelper.GetColumnKeyComment(strColumnComment);
+
+
                     string strClassName = CommonHelper.GetClassName(strTableName);
 
                     CodeRobot.Utility.PublicValue.SaveMessage(Convert.ToDateTime(DateTime.Now).ToString("MM-dd HH:mm:ss") + " " + strTableName + " -> 已生成");
@@ -210,6 +221,15 @@ namespace CodeRobot.DAL
                         CodeRobot.Utility.LogHelper.Error(typeof(ReadmeHelper), ex, "创建SQL相关文件", "GetTables", false);
                     }
 
+
+                    //生成JAVA代码
+                    JavaControllersHelper.CreateControllersClass(strJavaPath, strProjectName, strTableName, strColumnComment);
+                    JavaControllersViewHelper.CreateControllersViewClass(strJavaPath, strProjectName, strTableName, strColumnComment);
+                    JavaMapperHelper.CreateMapperClass(strJavaPath, strProjectName, strTableName, strColumnComment);
+                    JavaServiceHelper.CreateServiceClass(strJavaPath, strProjectName, strTableName, strColumnComment);
+                    JavaServiceImplHelper.CreateServiceImplClass(strJavaPath, strProjectName, strTableName, strColumnComment);
+                    JavaViewsMapperHelper.CreateViewMapperClass(strJavaPath, strProjectName, strTableName, strColumnComment);
+
                     num++;
                 }
                 dr.Dispose();
@@ -232,13 +252,13 @@ namespace CodeRobot.DAL
 
                 //创建相关项目的系统文件及项目文件
                 SystemHelper.CreateSolutionSystemFile(strProjectPath, strProjectName);
-                SystemHelper.CreateDBSqlHelperSystemFile(strDBSqlHelperPath, strProjectName);
-                SystemHelper.CreateModelSystemFile(strModelPath, strProjectName, strCompileTableModel);
-                SystemHelper.CreateDALSystemFile(strDALPath, strProjectName, strCompileTableDAL);
-                SystemHelper.CreateBLLSystemFile(strBLLPath, strProjectName, strCompileTableBLL);
-                SystemHelper.CreateUtilitySystemFile(strUtilityPath, strProjectName);
-                SystemHelper.CreateSMSSystemFile(strSMSPath, strProjectName);
-                SystemHelper.CreatePushSystemFile(strPushPath, strProjectName);
+                //SystemHelper.CreateDBSqlHelperSystemFile(strDBSqlHelperPath, strProjectName);
+                //SystemHelper.CreateModelSystemFile(strModelPath, strProjectName, strCompileTableModel);
+                //SystemHelper.CreateDALSystemFile(strDALPath, strProjectName, strCompileTableDAL);
+                //SystemHelper.CreateBLLSystemFile(strBLLPath, strProjectName, strCompileTableBLL);
+                //SystemHelper.CreateUtilitySystemFile(strUtilityPath, strProjectName);
+                //SystemHelper.CreateSMSSystemFile(strSMSPath, strProjectName);
+                //SystemHelper.CreatePushSystemFile(strPushPath, strProjectName);
 
                 //创建Web项目的相关配置文件
                 WebHelper.CreateWebFile(strProjectPath, strProjectName);
@@ -266,8 +286,17 @@ namespace CodeRobot.DAL
                 string strModelsPath = iniFile.GetString("CORE", "MODELS", "");//实体类路径
                 string strProjectName = iniFile.GetString("BASE", "PROJECT", "");//项目名
 
+                string strJavaModelPath = iniFile.GetString("JAVA", "JAVA", ""); ;//实体类路径
+
                 string strEntityVariableList = "";//实体变量
                 string strEntityFunctionList = "";//实体方法
+
+                string strJavaEntityVariableList = "";//Java实体变量
+                string strJavaEntityFunctionList = "";//Java实体方法
+                string strJavaHtmlCreateList = "";
+                string strJavaHtmlEditList = "";
+                string strJavaHtmlDetailsList = "";
+                string strJavaHtmlList = "";
 
                 MySqlConnection cn = new MySqlConnection(CodeRobot.DBSqlHelper.DBMySQLHelper.ConnectionMySQL());
                 cn.Open();
@@ -294,8 +323,15 @@ namespace CodeRobot.DAL
                     string strDefineValue = "m" + CommonHelper.GetTableNameUpper(strColumnName);
                     string strDefineCoreValue = strColumnName;
 
+
+                    string strClassName = CommonHelper.GetTableNameUpper(strColumnName);
+                    strClassName = CommonHelper.GetTableNameUpper(strClassName);//News
+                    string strTableNameSpec = CommonHelper.GetTableNameFirstLowerSecondUpper(strClassName);//如：newsTypes
+                    string strTableNameLower = strTableNameSpec.ToLower();//如：newstypes
+
                     //定义变量
                     string strValue = "";
+                    string strJavaValue = "";
                     if (strColumnKey== "PRI")
                     {
                         strValue = "        /// <summary>\r\n";
@@ -303,6 +339,14 @@ namespace CodeRobot.DAL
                         strValue += "        /// </summary>\r\n";
                         strValue += "        [Key]\r\n";
                         strValue += "        public " + strDataType + "  " + strDefineCoreValue + " { get; set; }\r\n";
+
+                        strJavaValue = "    \r\n";
+                        strJavaValue = "    /**\r\n";
+                        strJavaValue += "     * " + strColumnComment+ "\r\n";
+                        strJavaValue += "     */\r\n";
+                        strJavaValue += "    @TableId(value = \"" + strColumnName + "\", type = IdType.AUTO)\r\n";
+                        strJavaValue += "    private " + strDataType + " "+ strClassName + ";\r\n";
+
                     }
                     else if (strColumnType== "datetime")
                     {
@@ -318,8 +362,15 @@ namespace CodeRobot.DAL
                         strValue += "        /// " + strColumnComment + "\r\n";
                         strValue += "        /// </summary>\r\n";
                         strValue += "        public " + strDataType + "  " + strDefineCoreValue + " { get; set; }\r\n";
+
+                        strJavaValue = "    /**\r\n";
+                        strJavaValue += "     * " + strColumnComment+ "\r\n";
+                        strJavaValue += "     */\r\n";
+                        strJavaValue += "    @TableId(value = \"" + strColumnName + "\")\r\n";
+                        strJavaValue += "    private " + strDataType + " " + strClassName + ";\r\n";
                     }
                     strEntityVariableList += strValue;
+                    strJavaEntityVariableList += strJavaValue;
 
                     //定义方法
                     string strFunction = "\r\n";
@@ -339,15 +390,56 @@ namespace CodeRobot.DAL
                     strFunction += "        }\r\n";
 
                     strEntityFunctionList += strFunction;
+
+
+                    //定义Java方法
+                    string strJavaFunction = "	public " + strDataType + " get" + strClassName + "() {\r\n";
+                    strJavaFunction += "		return " + strTableNameSpec + ";\r\n";
+                    strJavaFunction += "	}\r\n";
+                    strJavaFunction += "	public void set"+ strClassName + "(" + strDataType + " " + strTableNameSpec + ") {\r\n";
+                    strJavaFunction += "		this." + strTableNameSpec + " = " + strTableNameSpec + ";\r\n";
+                    strJavaFunction += "	}\r\n";
+
+                    strJavaEntityFunctionList += strJavaFunction;
+                    //定义Java 新增字段
+                    string strJavaHtml = "		<div class=\"layui-form-item\">\r\n";
+                    strJavaHtml += "			<label class=\"layui-form-label\">"+strColumnComment+ "</label>\r\n";
+                    strJavaHtml += "			<div class=\"layui-input-inline\">\r\n";
+                    strJavaHtml += "				<input type=\"text\" name=\"" + strColumnName + "\" lay-verify=\"required\" placeholder=\"请输入" + strColumnComment + "\" autocomplete=\"off\" class=\"layui-input\">\r\n";
+                    strJavaHtml += "			</div>\r\n";
+                    strJavaHtmlCreateList += strJavaHtml;
+                    //定义Java 编辑字段
+                    string strJavaEditHtml = "		<div class=\"layui-form-item\">\r\n";
+                    strJavaEditHtml += "			<label class=\"layui-form-label\">" + strColumnComment + "</label>\r\n";
+                    strJavaEditHtml += "			<div class=\"layui-input-inline\">\r\n";
+                    strJavaEditHtml += "				<input type=\"text\"  th:value=\"${"+ strTableNameLower + "."+strColumnName+"}\" name=\"" + strColumnName + "\" lay-verify=\"required\" placeholder=\"请输入" + strColumnComment + "\" autocomplete=\"off\" class=\"layui-input\">\r\n";
+                    strJavaEditHtml += "			</div>\r\n";
+                    strJavaHtmlEditList += strJavaEditHtml;
+                    //定义Java 详情字段
+                    string strJavaDetailsHtml = "		<div class=\"layui-form-item\">\r\n";
+                    strJavaDetailsHtml += "			<label class=\"layui-form-label\">" + strColumnComment + "</label>\r\n";
+                    strJavaDetailsHtml += "			<div class=\"layui-input-inline\">\r\n";
+                    strJavaDetailsHtml += "				<span th:text=\"${" + strTableNameLower + "." + strColumnName + "}\"></span>\r\n";
+                    strJavaDetailsHtml += "			</div>\r\n";
+                    strJavaHtmlDetailsList += strJavaDetailsHtml;
+
                     #endregion
 
                 }
                 dr.Dispose();
                 cn.Close();
 
-                //生成实体类
+                //生成.net core实体类
                 //ModelHelper.CreateModelClass(strModelPath, strProjectName, strTableName, strEntityVariableList, strTableColumnComment);
                 ModelHelper.CreateModelClass(strModelsPath, strProjectName, strTableName, strEntityVariableList, strTableColumnComment);
+
+                //生成Java实体类
+                JavaEntityHelper.CreateEntityClass(strJavaModelPath, strProjectName, strJavaEntityVariableList,strJavaEntityFunctionList, strTableName, strTableColumnComment);
+                //生成新增页面
+                JavaViewsCreateHelper.CreateViewCreateClass(strJavaModelPath, strProjectName, strJavaHtmlCreateList, strTableName, strTableColumnComment);
+                JavaViewsEditHelper.CreateViewEditClass(strJavaModelPath, strProjectName, strJavaHtmlEditList, strTableName, strTableColumnComment);
+                JavaViewsListHelper.CreateViewListClass(strJavaModelPath, strProjectName, strJavaHtmlList, strTableName, strTableColumnComment);
+                JavaViewsDetailsHelper.CreateViewDetailsClass(strJavaModelPath, strProjectName, strJavaHtmlDetailsList, strTableName, strTableColumnComment);
             }
             catch (Exception ex)
             {
