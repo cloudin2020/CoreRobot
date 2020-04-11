@@ -246,7 +246,6 @@ namespace CodeRobot.DAL
                         string strColumnComment2 = CommonHelper.GetColumnKeyComment(strColumnComment);
 
                         string strValue = "                <div class=\"layui-inline\">\r\n";
-                        strValue += "                    <label class=\"layui-form-label\">"+ strColumnComment2 + "</label>\r\n";
                         strValue += "                    <div class=\"layui-input-inline\">\r\n";
                         strValue += "                        <input type=\"text\" id=\""+ strColumnName + "\" name=\"" + strColumnName + "\" placeholder=\"请输入" + strColumnComment2 + "\" autocomplete=\"off\" class=\"layui-input\">\r\n";
                         strValue += "                    </div>\r\n";

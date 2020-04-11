@@ -731,7 +731,7 @@ namespace CodeRobot.DAL
 
                     if (strColumnName == strPrimaryKey)
                     {
-                        if (strColumnKey == "bigint")
+                        if (strColumnType.Contains("bigint"))
                         {
                             bValue = true;
                         }
